@@ -1,0 +1,58 @@
+{
+  "name": "spotify-clone-backend",
+  "version": "1.0.0",
+  "description": "Backend API REST para Spotify Clone - Express.js + TypeScript + Drizzle ORM",
+  "main": "dist/server.js",
+  "scripts": {
+    "dev": "nodemon src/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "db:generate": "drizzle-kit generate:pg",
+    "db:migrate": "drizzle-kit migrate:pg",
+    "db:push": "drizzle-kit push",
+    "db:studio": "drizzle-kit studio",
+    "db:seed": "tsx src/db/seeds/seed.ts"
+  },
+  "keywords": [
+    "express",
+    "typescript",
+    "drizzle-orm",
+    "postgresql",
+    "api",
+    "rest"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "drizzle-orm": "^0.29.0",
+    "pg": "^8.11.3",
+    "bcrypt": "^5.1.1",
+    "jsonwebtoken": "^9.0.2",
+    "express-validator": "^7.0.1"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.10.0",
+    "@types/cors": "^2.8.17",
+    "@types/bcrypt": "^5.0.2",
+    "@types/jsonwebtoken": "^9.0.5",
+    "@types/pg": "^8.10.9",
+    "@types/jest": "^29.5.11",
+    "drizzle-kit": "^0.20.6",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.1",
+    "supertest": "^6.3.3",
+    "@types/supertest": "^6.0.2",
+    "nodemon": "^3.0.2",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.7.0",
+    "typescript": "^5.3.3"
+  }
+}
+

@@ -1,0 +1,3 @@
+# Este arquivo mantém a pasta migrations no Git
+# As migrations geradas pelo drizzle-kit serão commitadas aqui
+
