@@ -27,7 +27,7 @@ function initializePool(): Pool | null {
       },
     });
     
-    pool.on('error', (err) => {
+    pool.on('error', (err: Error) => {
       logger.error('Erro inesperado no pool de conexões', err);
     });
   } catch (error) {
@@ -42,7 +42,7 @@ function initializePool(): Pool | null {
 export const db = (() => {
   const connectionPool = initializePool();
   if (!connectionPool) {
-    return null as any;
+    return null;
   }
   return drizzle(connectionPool, { schema });
 })();
@@ -58,7 +58,7 @@ export async function testConnection(): Promise<void> {
   try {
     const result = await Promise.race([
       connectionPool.query('SELECT 1 as test'),
-      new Promise((_, reject) => 
+      new Promise<never>((_, reject) => 
         setTimeout(() => reject(new Error('Timeout na conexão com banco de dados')), 5000)
       ),
     ]);
@@ -75,6 +75,19 @@ export async function testConnection(): Promise<void> {
       'Falha na conexão com o banco de dados. Verifique a configuração do DATABASE_URL.'
     );
   }
+}
+
+/** Valida se o banco de dados está disponível */
+export function requireDb(): NonNullable<typeof db> {
+  if (!db) {
+    throw new Error('Banco de dados não está configurado. Verifique a variável DATABASE_URL.');
+  }
+  return db;
+}
+
+/** Verifica se o banco de dados está disponível */
+export function isDbAvailable(): boolean {
+  return db !== null;
 }
 
 /** Fecha todas as conexões do pool */
