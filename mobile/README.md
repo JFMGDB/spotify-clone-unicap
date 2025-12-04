@@ -25,8 +25,11 @@ Aplicativo mobile desenvolvido em **React Native + Expo** com **Expo Router** e 
 
 3. Configure as variáveis de ambiente (opcional):
    ```bash
-   # Crie um arquivo .env na raiz do projeto
-   EXPO_PUBLIC_API_URL=http://localhost:3000/api
+   # Copie o arquivo de exemplo
+   cp .env.example .env
+   
+   # Edite o .env e configure:
+   # - EXPO_PUBLIC_API_URL (URL base da API backend)
    ```
 
 ### Executar em Desenvolvimento
