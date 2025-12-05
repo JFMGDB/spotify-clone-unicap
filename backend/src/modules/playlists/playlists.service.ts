@@ -1,6 +1,6 @@
 import { eq, and } from 'drizzle-orm';
 import { requireDb } from '../../config/db';
-import { playlists, playlistTracks, tracks, users } from '../../db/schema';
+import { playlists, playlistTracks, tracks, albums, artists } from '../../db/schema';
 import { AppError } from '../../common/errors/AppError';
 import { ErrorCodes } from '../../common/errors/error-codes';
 
@@ -80,16 +80,8 @@ export async function createPlaylist(data: CreatePlaylistData) {
     throw new AppError('Nome é obrigatório', 400, ErrorCodes.VALIDATION_ERROR);
   }
 
-  // Verifica se usuário existe
-  const [user] = await database
-    .select()
-    .from(users)
-    .where(eq(users.id, data.userId))
-    .limit(1);
-
-  if (!user) {
-    throw new AppError('Usuário não encontrado', 404, ErrorCodes.NOT_FOUND);
-  }
+  // Não precisa verificar se usuário existe - o middleware de autenticação já garante isso
+  // e o userId vem do token JWT validado
 
   const [newPlaylist] = await database
     .insert(playlists)
@@ -182,14 +174,55 @@ export async function deletePlaylist(playlistId: string, userId: string) {
 export async function getPlaylistTracks(playlistId: string) {
   const database = requireDb();
 
-  return await database
+  const results = await database
     .select({
-      track: tracks,
+      trackId: tracks.id,
+      trackTitle: tracks.title,
+      trackAlbumId: tracks.albumId,
+      trackArtistId: tracks.artistId,
+      trackDuration: tracks.duration,
+      trackAudioUrl: tracks.audioUrl,
+      trackNumber: tracks.trackNumber,
+      trackCreatedAt: tracks.createdAt,
+      trackUpdatedAt: tracks.updatedAt,
+      artistId: artists.id,
+      artistName: artists.name,
+      albumId: albums.id,
+      albumTitle: albums.title,
+      albumCoverUrl: albums.coverUrl,
       addedAt: playlistTracks.addedAt,
     })
     .from(playlistTracks)
     .innerJoin(tracks, eq(playlistTracks.trackId, tracks.id))
+    .innerJoin(artists, eq(tracks.artistId, artists.id))
+    .leftJoin(albums, eq(tracks.albumId, albums.id))
     .where(eq(playlistTracks.playlistId, playlistId));
+
+  return results.map((row) => ({
+    track: {
+      id: row.trackId,
+      title: row.trackTitle,
+      albumId: row.trackAlbumId,
+      artistId: row.trackArtistId,
+      duration: row.trackDuration,
+      audioUrl: row.trackAudioUrl,
+      trackNumber: row.trackNumber,
+      createdAt: row.trackCreatedAt,
+      updatedAt: row.trackUpdatedAt,
+      artist: {
+        id: row.artistId,
+        name: row.artistName,
+      },
+      album: row.albumId
+        ? {
+            id: row.albumId,
+            title: row.albumTitle,
+            coverUrl: row.albumCoverUrl,
+          }
+        : undefined,
+    },
+    addedAt: row.addedAt,
+  }));
 }
 
 /** Adiciona uma track a uma playlist */

@@ -15,7 +15,8 @@ import {
   updatePlaylistValidators,
   addTrackValidators,
 } from './playlists.validators';
-import { authMiddleware } from '../../common/middleware/auth.middleware';
+import { authMiddleware, optionalAuthMiddleware } from '../../common/middleware/auth.middleware';
+import { validateRequest } from '../../common/middleware/error.middleware';
 
 const router = Router();
 
@@ -26,16 +27,16 @@ router.get('/', authMiddleware, getAllPlaylistsController);
 router.get('/user/:userId', authMiddleware, getPlaylistsByUserController);
 
 /** GET /api/playlists/:id/tracks - Lista tracks de uma playlist */
-router.get('/:id/tracks', getPlaylistTracksController);
+router.get('/:id/tracks', optionalAuthMiddleware, getPlaylistTracksController);
 
 /** GET /api/playlists/:id - Busca uma playlist por ID */
-router.get('/:id', getPlaylistByIdController);
+router.get('/:id', optionalAuthMiddleware, getPlaylistByIdController);
 
 /** POST /api/playlists - Cria uma nova playlist */
-router.post('/', authMiddleware, createPlaylistValidators, createPlaylistController);
+router.post('/', authMiddleware, createPlaylistValidators, validateRequest, createPlaylistController);
 
 /** PUT /api/playlists/:id - Atualiza uma playlist */
-router.put('/:id', authMiddleware, updatePlaylistValidators, updatePlaylistController);
+router.put('/:id', authMiddleware, updatePlaylistValidators, validateRequest, updatePlaylistController);
 
 /** DELETE /api/playlists/:id - Deleta uma playlist */
 router.delete('/:id', authMiddleware, deletePlaylistController);
@@ -45,6 +46,7 @@ router.post(
   '/:id/tracks',
   authMiddleware,
   addTrackValidators,
+  validateRequest,
   addTrackToPlaylistController
 );
 

@@ -10,7 +10,6 @@ import {
   addTrackToPlaylist,
   removeTrackFromPlaylist,
 } from './playlists.service';
-import { validateRequest } from '../../common/middleware/error.middleware';
 
 /** GET /api/playlists - Lista todas as playlists */
 export async function getAllPlaylistsController(req: Request, res: Response): Promise<void> {
@@ -43,6 +42,10 @@ export async function getPlaylistsByUserController(req: Request, res: Response):
 /** GET /api/playlists/:id/tracks - Lista tracks de uma playlist */
 export async function getPlaylistTracksController(req: Request, res: Response): Promise<void> {
   const { id } = req.params;
+  const userId = req.userId || undefined;
+
+  // Verifica se o usuario tem acesso a playlist antes de retornar as tracks
+  await getPlaylistById(id, userId);
 
   const playlistTracks = await getPlaylistTracks(id);
 
@@ -51,8 +54,6 @@ export async function getPlaylistTracksController(req: Request, res: Response): 
 
 /** POST /api/playlists - Cria uma nova playlist */
 export async function createPlaylistController(req: Request, res: Response): Promise<void> {
-  validateRequest(req, res, () => {});
-
   if (!req.userId) {
     res.status(401).json({ error: { message: 'Não autenticado', code: 'UNAUTHORIZED' } });
     return;
@@ -73,8 +74,6 @@ export async function createPlaylistController(req: Request, res: Response): Pro
 
 /** PUT /api/playlists/:id - Atualiza uma playlist */
 export async function updatePlaylistController(req: Request, res: Response): Promise<void> {
-  validateRequest(req, res, () => {});
-
   if (!req.userId) {
     res.status(401).json({ error: { message: 'Não autenticado', code: 'UNAUTHORIZED' } });
     return;
