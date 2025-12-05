@@ -1,0 +1,1261 @@
+{
+	"info": {
+		"_postman_id": "spotify-clone-api-collection",
+		"name": "Spotify Clone API",
+		"description": "Collection completa para testar a API do Spotify Clone. Inclui todas as rotas de autenticação, usuários, artistas, álbuns, tracks e playlists.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Health Check",
+			"item": [
+				{
+					"name": "Health Check",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/health",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"health"
+							]
+						},
+						"description": "Verifica se a API está rodando corretamente"
+					},
+					"response": []
+				},
+				{
+					"name": "Root",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								""
+							]
+						},
+						"description": "Endpoint raiz da API"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Register",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 201) {",
+									"    const response = pm.response.json();",
+									"    if (response.token) {",
+									"        pm.collectionVariables.set('auth_token', response.token);",
+									"        pm.collectionVariables.set('user_id', response.user.id);",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"{{test_email}}\",\n    \"password\": \"{{test_password}}\",\n    \"name\": \"{{test_name}}\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/register",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"register"
+							]
+						},
+						"description": "Registra um novo usuário no sistema"
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    const response = pm.response.json();",
+									"    if (response.token) {",
+									"        pm.collectionVariables.set('auth_token', response.token);",
+									"        pm.collectionVariables.set('user_id', response.user.id);",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"{{test_email}}\",\n    \"password\": \"{{test_password}}\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						},
+						"description": "Autentica um usuário e retorna o token JWT"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Get Current User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/users/me",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"me"
+							]
+						},
+						"description": "Retorna os dados do usuário autenticado"
+					},
+					"response": []
+				},
+				{
+					"name": "Get User by ID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/users/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{user_id}}"
+								}
+							]
+						},
+						"description": "Retorna os dados de um usuário específico por ID"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Artists",
+			"item": [
+				{
+					"name": "Get All Artists",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/artists",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"artists"
+							]
+						},
+						"description": "Lista todos os artistas cadastrados"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Artist by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/artists/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"artists",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{artist_id}}"
+								}
+							]
+						},
+						"description": "Retorna os dados de um artista específico"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Artist",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"{{artist_name}}\",\n    \"imageUrl\": \"{{artist_image_url}}\",\n    \"bio\": \"{{artist_bio}}\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/artists",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"artists"
+							]
+						},
+						"description": "Cria um novo artista (requer autenticação)"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Artist",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"{{artist_name}}\",\n    \"imageUrl\": \"{{artist_image_url}}\",\n    \"bio\": \"{{artist_bio}}\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/artists/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"artists",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{artist_id}}"
+								}
+							]
+						},
+						"description": "Atualiza os dados de um artista (requer autenticação)"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Artist",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/artists/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"artists",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{artist_id}}"
+								}
+							]
+						},
+						"description": "Remove um artista do sistema (requer autenticação)"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Albums",
+			"item": [
+				{
+					"name": "Get All Albums",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/albums",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"albums"
+							]
+						},
+						"description": "Lista todos os álbuns cadastrados"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Album by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/albums/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"albums",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{album_id}}"
+								}
+							]
+						},
+						"description": "Retorna os dados de um álbum específico"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Albums by Artist",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/albums/artist/:artistId",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"albums",
+								"artist",
+								":artistId"
+							],
+							"variable": [
+								{
+									"key": "artistId",
+									"value": "{{artist_id}}"
+								}
+							]
+						},
+						"description": "Lista todos os álbuns de um artista específico"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Album",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"{{album_title}}\",\n    \"artistId\": \"{{artist_id}}\",\n    \"coverUrl\": \"{{album_cover_url}}\",\n    \"releaseDate\": \"{{album_release_date}}\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/albums",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"albums"
+							]
+						},
+						"description": "Cria um novo álbum (requer autenticação)"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Album",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"{{album_title}}\",\n    \"artistId\": \"{{artist_id}}\",\n    \"coverUrl\": \"{{album_cover_url}}\",\n    \"releaseDate\": \"{{album_release_date}}\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/albums/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"albums",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{album_id}}"
+								}
+							]
+						},
+						"description": "Atualiza os dados de um álbum (requer autenticação)"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Album",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/albums/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"albums",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{album_id}}"
+								}
+							]
+						},
+						"description": "Remove um álbum do sistema (requer autenticação)"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Tracks",
+			"item": [
+				{
+					"name": "Get All Tracks",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/tracks",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"tracks"
+							]
+						},
+						"description": "Lista todas as tracks cadastradas"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Track by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/tracks/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"tracks",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{track_id}}"
+								}
+							]
+						},
+						"description": "Retorna os dados de uma track específica"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Tracks by Album",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/tracks/album/:albumId",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"tracks",
+								"album",
+								":albumId"
+							],
+							"variable": [
+								{
+									"key": "albumId",
+									"value": "{{album_id}}"
+								}
+							]
+						},
+						"description": "Lista todas as tracks de um álbum específico"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Tracks by Artist",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/tracks/artist/:artistId",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"tracks",
+								"artist",
+								":artistId"
+							],
+							"variable": [
+								{
+									"key": "artistId",
+									"value": "{{artist_id}}"
+								}
+							]
+						},
+						"description": "Lista todas as tracks de um artista específico"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Track",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"{{track_title}}\",\n    \"artistId\": \"{{artist_id}}\",\n    \"albumId\": \"{{album_id}}\",\n    \"duration\": {{track_duration}},\n    \"audioUrl\": \"{{track_audio_url}}\",\n    \"trackNumber\": {{track_number}}\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/tracks",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"tracks"
+							]
+						},
+						"description": "Cria uma nova track (requer autenticação)"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Track",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"{{track_title}}\",\n    \"artistId\": \"{{artist_id}}\",\n    \"albumId\": \"{{album_id}}\",\n    \"duration\": {{track_duration}},\n    \"audioUrl\": \"{{track_audio_url}}\",\n    \"trackNumber\": {{track_number}}\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/tracks/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"tracks",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{track_id}}"
+								}
+							]
+						},
+						"description": "Atualiza os dados de uma track (requer autenticação)"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Track",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/tracks/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"tracks",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{track_id}}"
+								}
+							]
+						},
+						"description": "Remove uma track do sistema (requer autenticação)"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Playlists",
+			"item": [
+				{
+					"name": "Get All Playlists",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/playlists",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"playlists"
+							]
+						},
+						"description": "Lista todas as playlists (requer autenticação)"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Playlist by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/playlists/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"playlists",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{playlist_id}}"
+								}
+							]
+						},
+						"description": "Retorna os dados de uma playlist específica"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Playlists by User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/playlists/user/:userId",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"playlists",
+								"user",
+								":userId"
+							],
+							"variable": [
+								{
+									"key": "userId",
+									"value": "{{user_id}}"
+								}
+							]
+						},
+						"description": "Lista todas as playlists de um usuário específico (requer autenticação)"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Playlist Tracks",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/playlists/:id/tracks",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"playlists",
+								":id",
+								"tracks"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{playlist_id}}"
+								}
+							]
+						},
+						"description": "Lista todas as tracks de uma playlist específica"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Playlist",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"{{playlist_name}}\",\n    \"description\": \"{{playlist_description}}\",\n    \"coverUrl\": \"{{playlist_cover_url}}\",\n    \"isPublic\": {{playlist_is_public}}\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/playlists",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"playlists"
+							]
+						},
+						"description": "Cria uma nova playlist (requer autenticação)"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Playlist",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"{{playlist_name}}\",\n    \"description\": \"{{playlist_description}}\",\n    \"coverUrl\": \"{{playlist_cover_url}}\",\n    \"isPublic\": {{playlist_is_public}}\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/playlists/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"playlists",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{playlist_id}}"
+								}
+							]
+						},
+						"description": "Atualiza os dados de uma playlist (requer autenticação)"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Playlist",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/playlists/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"playlists",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{playlist_id}}"
+								}
+							]
+						},
+						"description": "Remove uma playlist do sistema (requer autenticação)"
+					},
+					"response": []
+				},
+				{
+					"name": "Add Track to Playlist",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"trackId\": \"{{track_id}}\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/playlists/:id/tracks",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"playlists",
+								":id",
+								"tracks"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{playlist_id}}"
+								}
+							]
+						},
+						"description": "Adiciona uma track a uma playlist (requer autenticação)"
+					},
+					"response": []
+				},
+				{
+					"name": "Remove Track from Playlist",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/playlists/:id/tracks/:trackId",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"playlists",
+								":id",
+								"tracks",
+								":trackId"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{playlist_id}}"
+								},
+								{
+									"key": "trackId",
+									"value": "{{track_id}}"
+								}
+							]
+						},
+						"description": "Remove uma track de uma playlist (requer autenticação)"
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:3000",
+			"type": "string"
+		},
+		{
+			"key": "auth_token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "user_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "artist_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "album_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "track_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "playlist_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "test_email",
+			"value": "test@example.com",
+			"type": "string"
+		},
+		{
+			"key": "test_password",
+			"value": "password123",
+			"type": "string"
+		},
+		{
+			"key": "test_name",
+			"value": "Test User",
+			"type": "string"
+		},
+		{
+			"key": "artist_name",
+			"value": "Artist Name",
+			"type": "string"
+		},
+		{
+			"key": "artist_image_url",
+			"value": "https://example.com/artist.jpg",
+			"type": "string"
+		},
+		{
+			"key": "artist_bio",
+			"value": "Artist biography",
+			"type": "string"
+		},
+		{
+			"key": "album_title",
+			"value": "Album Title",
+			"type": "string"
+		},
+		{
+			"key": "album_cover_url",
+			"value": "https://example.com/album.jpg",
+			"type": "string"
+		},
+		{
+			"key": "album_release_date",
+			"value": "2024-01-01T00:00:00.000Z",
+			"type": "string"
+		},
+		{
+			"key": "track_title",
+			"value": "Track Title",
+			"type": "string"
+		},
+		{
+			"key": "track_duration",
+			"value": "180",
+			"type": "string"
+		},
+		{
+			"key": "track_audio_url",
+			"value": "https://example.com/track.mp3",
+			"type": "string"
+		},
+		{
+			"key": "track_number",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "playlist_name",
+			"value": "My Playlist",
+			"type": "string"
+		},
+		{
+			"key": "playlist_description",
+			"value": "Playlist description",
+			"type": "string"
+		},
+		{
+			"key": "playlist_cover_url",
+			"value": "https://example.com/playlist.jpg",
+			"type": "string"
+		},
+		{
+			"key": "playlist_is_public",
+			"value": "false",
+			"type": "string"
+		}
+	]
+}
+
