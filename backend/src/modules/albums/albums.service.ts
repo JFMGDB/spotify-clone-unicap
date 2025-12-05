@@ -98,8 +98,21 @@ export async function getAlbumsByArtistId(artistId: string) {
   const database = requireDb();
 
   return await database
-    .select()
+    .select({
+      id: albums.id,
+      title: albums.title,
+      artistId: albums.artistId,
+      coverUrl: albums.coverUrl,
+      releaseDate: albums.releaseDate,
+      createdAt: albums.createdAt,
+      updatedAt: albums.updatedAt,
+      artist: {
+        id: artists.id,
+        name: artists.name,
+      },
+    })
     .from(albums)
+    .innerJoin(artists, eq(albums.artistId, artists.id))
     .where(eq(albums.artistId, artistId));
 }
 

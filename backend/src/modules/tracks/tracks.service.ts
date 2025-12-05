@@ -1,4 +1,4 @@
-import { eq, ilike } from 'drizzle-orm';
+import { eq, ilike, or } from 'drizzle-orm';
 import { requireDb } from '../../config/db';
 import { tracks, albums, artists } from '../../db/schema';
 import { AppError } from '../../common/errors/AppError';
@@ -53,7 +53,12 @@ export async function getAllTracks(search?: string) {
     .leftJoin(albums, eq(tracks.albumId, albums.id));
 
   if (search) {
-    return await baseQuery.where(ilike(tracks.title, `%${search}%`));
+    return await baseQuery.where(
+      or(
+        ilike(tracks.title, `%${search}%`),
+        ilike(artists.name, `%${search}%`)
+      )
+    );
   }
 
   return await baseQuery;
@@ -103,8 +108,29 @@ export async function getTracksByAlbumId(albumId: string) {
   const database = requireDb();
 
   return await database
-    .select()
+    .select({
+      id: tracks.id,
+      title: tracks.title,
+      albumId: tracks.albumId,
+      artistId: tracks.artistId,
+      duration: tracks.duration,
+      audioUrl: tracks.audioUrl,
+      trackNumber: tracks.trackNumber,
+      createdAt: tracks.createdAt,
+      updatedAt: tracks.updatedAt,
+      artist: {
+        id: artists.id,
+        name: artists.name,
+      },
+      album: {
+        id: albums.id,
+        title: albums.title,
+        coverUrl: albums.coverUrl,
+      },
+    })
     .from(tracks)
+    .innerJoin(artists, eq(tracks.artistId, artists.id))
+    .leftJoin(albums, eq(tracks.albumId, albums.id))
     .where(eq(tracks.albumId, albumId))
     .orderBy(tracks.trackNumber);
 }
@@ -114,8 +140,29 @@ export async function getTracksByArtistId(artistId: string) {
   const database = requireDb();
 
   return await database
-    .select()
+    .select({
+      id: tracks.id,
+      title: tracks.title,
+      albumId: tracks.albumId,
+      artistId: tracks.artistId,
+      duration: tracks.duration,
+      audioUrl: tracks.audioUrl,
+      trackNumber: tracks.trackNumber,
+      createdAt: tracks.createdAt,
+      updatedAt: tracks.updatedAt,
+      artist: {
+        id: artists.id,
+        name: artists.name,
+      },
+      album: {
+        id: albums.id,
+        title: albums.title,
+        coverUrl: albums.coverUrl,
+      },
+    })
     .from(tracks)
+    .innerJoin(artists, eq(tracks.artistId, artists.id))
+    .leftJoin(albums, eq(tracks.albumId, albums.id))
     .where(eq(tracks.artistId, artistId));
 }
 
