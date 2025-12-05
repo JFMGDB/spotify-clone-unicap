@@ -47,8 +47,10 @@ async function startServer(): Promise<void> {
     const app = createApp();
     const port = env.PORT;
     
-    server = app.listen(port, () => {
-      logger.info(`Servidor rodando em http://localhost:${port}`);
+    // Vincular ao 0.0.0.0 para aceitar conexoes de dispositivos externos
+    const host = '0.0.0.0';
+    server = app.listen(port, host, () => {
+      logger.info(`Servidor rodando em http://${host}:${port}`);
       logger.info(`Ambiente: ${env.NODE_ENV}`);
       logger.info(`Health check: http://localhost:${port}/health`);
     });

@@ -11,9 +11,14 @@ export function createApp(): Express {
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
 
+  // Em desenvolvimento, aceita qualquer origem para facilitar testes mobile
+  const corsOrigin = env.NODE_ENV === 'development' 
+    ? true  // Aceita qualquer origem em desenvolvimento
+    : env.CORS_ORIGIN;
+
   app.use(
     cors({
-      origin: env.CORS_ORIGIN,
+      origin: corsOrigin,
       credentials: true,
     })
   );

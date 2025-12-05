@@ -114,6 +114,7 @@ backend/
 - `npm run db:migrate` - Aplica migrations no banco
 - `npm run db:push` - Push direto do schema (dev apenas)
 - `npm run db:studio` - Abre Drizzle Studio (interface visual do banco)
+- `npm run db:seed` - Popula o banco com dados de exemplo
 
 ## 🔧 Tecnologias
 

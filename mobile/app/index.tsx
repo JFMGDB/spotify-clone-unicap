@@ -1,11 +1,26 @@
-import { View, Text, StyleSheet } from 'react-native';
+import { useEffect } from 'react';
+import { View, ActivityIndicator, StyleSheet } from 'react-native';
+import { useAuth } from '@/src/contexts/AuthContext';
+import { router } from 'expo-router';
+import { colors } from '@/src/shared/theme/colors';
 
-/** Tela inicial temporária (será substituída por Splash/Auth no Épico 2) */
+/** Tela inicial - verifica autenticação e redireciona */
 export default function Index() {
+  const { isAuthenticated, isLoading } = useAuth();
+
+  useEffect(() => {
+    if (!isLoading) {
+      if (isAuthenticated) {
+        router.replace('/(tabs)');
+      } else {
+        router.replace('/(auth)/login');
+      }
+    }
+  }, [isAuthenticated, isLoading]);
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Hello Spotify Clone</Text>
-      <Text style={styles.subtitle}>App configurado com sucesso!</Text>
+      <ActivityIndicator size="large" color={colors.primary} />
     </View>
   );
 }
@@ -13,20 +28,8 @@ export default function Index() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#191414',
-    alignItems: 'center',
     justifyContent: 'center',
-    padding: 20,
-  },
-  title: {
-    fontSize: 32,
-    fontWeight: 'bold',
-    color: '#FFFFFF',
-    marginBottom: 10,
-  },
-  subtitle: {
-    fontSize: 16,
-    color: '#B3B3B3',
+    alignItems: 'center',
+    backgroundColor: colors.background,
   },
 });
-
