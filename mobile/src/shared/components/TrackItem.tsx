@@ -23,33 +23,44 @@ export function TrackItem({ title, artist, duration, onPress, style }: TrackItem
   const content = (
     <View style={[styles.container, style]}>
       <View style={styles.info}>
-        <Text style={styles.title} numberOfLines={1}>
-          {title}
+        <Text style={styles.title} numberOfLines={1} ellipsizeMode="tail">
+          {title || 'Sem titulo'}
         </Text>
-        <Text style={styles.artist} numberOfLines={1}>
-          {artist}
+        <Text style={styles.artist} numberOfLines={1} ellipsizeMode="tail">
+          {artist || 'Artista desconhecido'}
         </Text>
       </View>
-      {duration && <Text style={styles.duration}>{formatDuration(duration)}</Text>}
+      {duration !== undefined && duration > 0 && (
+        <Text style={styles.duration}>{formatDuration(duration)}</Text>
+      )}
     </View>
   );
 
   if (onPress) {
-    return <TouchableOpacity onPress={onPress} activeOpacity={0.7}>{content}</TouchableOpacity>;
+    return (
+      <TouchableOpacity onPress={onPress} activeOpacity={0.7} style={styles.touchable}>
+        {content}
+      </TouchableOpacity>
+    );
   }
 
   return content;
 }
 
 const styles = StyleSheet.create({
+  touchable: {
+    flex: 1,
+  },
   container: {
     flexDirection: 'row',
     alignItems: 'center',
     paddingVertical: spacing.md,
     paddingHorizontal: spacing.md,
+    flex: 1,
   },
   info: {
     flex: 1,
+    flexShrink: 1,
     marginRight: spacing.md,
   },
   title: {
@@ -64,6 +75,7 @@ const styles = StyleSheet.create({
   duration: {
     ...typography.caption,
     color: colors.textTertiary,
+    flexShrink: 0,
   },
 });
 

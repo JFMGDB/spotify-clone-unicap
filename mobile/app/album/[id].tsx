@@ -170,7 +170,6 @@ const styles = StyleSheet.create({
   },
   trackItem: {
     flex: 1,
-    minWidth: 0,
   },
   addButton: {
     padding: spacing.md,
