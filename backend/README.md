@@ -2,6 +2,17 @@
 
 API REST desenvolvida em **Node.js + Express.js + TypeScript** com **Drizzle ORM** e **PostgreSQL (Neon DB)**.
 
+## 👥 Integrantes
+
+- José Felipe Morais Guerra de Barros - RA: 00000853793
+- Jamilli Maria Francisca da Silva - RA: 00000854174
+- Enio Ramos Bezerra - RA: 00000003364
+- Débora Laís Macedo da Silva - RA: 00000851133
+- Ailton Cesar Anizio dos Santos - RA: 00000029548
+- José Gabriel Barros dos Santos - RA: 00000847959
+- Walbert Pereira de Lima - RA: 00000851041
+- Anderson Marcone da Silva Marinho - RA: 00000853760
+
 ## 🚀 Início Rápido
 
 ### Pré-requisitos
