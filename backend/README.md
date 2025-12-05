@@ -12,25 +12,52 @@ API REST desenvolvida em **Node.js + Express.js + TypeScript** com **Drizzle ORM
 
 ### Instalação
 
-1. Instale as dependências:
+1. **Instale as dependências:**
 ```bash
+cd backend
 npm install
 ```
 
-2. Configure as variáveis de ambiente:
-```bash
-cp .env.example .env
+2. **Configure as variáveis de ambiente:**
+
+Crie um arquivo `.env` na raiz de `backend/` com o seguinte conteúdo:
+
+```env
+# Banco de Dados
+DATABASE_URL=postgresql://user:password@host/database?sslmode=require
+
+# JWT (Autenticação)
+JWT_SECRET=sua-chave-secreta-super-segura-aqui
+JWT_EXPIRES_IN=1h
+
+# Servidor
+PORT=3000
+NODE_ENV=development
+
+# CORS
+CORS_ORIGIN=http://localhost:8081
 ```
 
-   O arquivo `.env.example` contém todas as variáveis necessárias com valores de exemplo. Para mais detalhes sobre configuração do Neon DB, consulte [setup-neon-db.md](./setup-neon-db.md).
+**Como obter DATABASE_URL:**
+- **Neon DB** (recomendado): Acesse [https://neon.tech](https://neon.tech) → Crie projeto → Copie a connection string
+- **PostgreSQL local**: `postgresql://usuario:senha@localhost:5432/nome_banco?sslmode=disable`
 
-3. Edite o arquivo `.env` e configure:
-   - `DATABASE_URL`: Connection string do Neon DB
-   - `JWT_SECRET`: Chave secreta para assinatura de tokens JWT
-   - `PORT`: Porta do servidor (padrão: 3000)
+**Como gerar JWT_SECRET:**
+```bash
+# Linux/Mac
+openssl rand -base64 32
 
-### Executar em Desenvolvimento
+# Windows (PowerShell)
+[Convert]::ToBase64String((1..32 | ForEach-Object { Get-Random -Minimum 0 -Maximum 256 }))
+```
 
+3. **Aplique as migrations:**
+```bash
+npm run db:generate
+npm run db:migrate
+```
+
+4. **Inicie o servidor:**
 ```bash
 npm run dev
 ```
@@ -75,8 +102,7 @@ backend/
 - `npm run db:generate` - Gera migrations do Drizzle
 - `npm run db:migrate` - Aplica migrations no banco
 - `npm run db:push` - Push direto do schema (dev apenas)
-- `npm run db:studio` - Abre Drizzle Studio
-- `npm run db:seed` - Popula banco com dados iniciais
+- `npm run db:studio` - Abre Drizzle Studio (interface visual do banco)
 
 ## 🔧 Tecnologias
 
@@ -88,10 +114,26 @@ backend/
 - **bcrypt**: Hash de senhas
 - **jsonwebtoken**: Autenticação JWT
 
-## 📝 Próximos Passos
+## 📚 Documentação Adicional
 
-1. Configurar conexão com Neon DB (Épico 1 - Tarefa E1-T4)
-2. Implementar schema do banco (Épico 3)
-3. Implementar autenticação (Épico 2)
-4. Implementar CRUD das entidades (Épicos 4-7)
+- **[IMPLEMENTATION_GUIDE.md](./IMPLEMENTATION_GUIDE.md)** - Guia detalhado de implementação e troubleshooting
+- **[POSTMAN_GUIDE.md](./POSTMAN_GUIDE.md)** - Guia de uso da collection do Postman
+- **[DISTRIBUICAO_TRABALHO.md](./DISTRIBUICAO_TRABALHO.md)** - Distribuição de trabalho entre desenvolvedores
+
+## 📝 Estrutura de Módulos
+
+O projeto segue uma arquitetura modular baseada em domínios:
+
+- **auth** - Autenticação (register, login)
+- **users** - Gerenciamento de usuários
+- **artists** - CRUD de artistas
+- **albums** - CRUD de álbuns
+- **tracks** - CRUD de músicas/faixas
+- **playlists** - CRUD de playlists e gerenciamento de tracks
+
+Cada módulo segue o padrão:
+- `{module}.controller.ts` - Handlers HTTP
+- `{module}.service.ts` - Lógica de negócio
+- `{module}.routes.ts` - Definição de rotas
+- `{module}.validators.ts` - Validações (quando aplicável)
 

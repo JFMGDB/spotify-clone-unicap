@@ -210,3 +210,37 @@ A collection está organizada em pastas:
 - Atualize as variáveis de ID após criar cada entidade
 - Verifique se os IDs estão corretos nas variáveis da collection
 
+---
+
+## Decisões de Design
+
+### Organização por Módulos
+
+As requisições estão organizadas em pastas que correspondem aos módulos do backend, mantendo consistência com a estrutura do código e facilitando navegação.
+
+### Uso de Variáveis de Collection
+
+A collection utiliza variáveis de collection (ao invés de variáveis de ambiente) para:
+- Compartilhamento automático entre todas as requisições
+- Simplificação do uso sem configuração adicional
+- Facilidade de customização
+
+### Autenticação Automática
+
+As requisições de Register e Login possuem scripts que capturam automaticamente o token JWT e o user_id da resposta, salvando-os nas variáveis da collection. Todas as rotas protegidas usam Bearer Token configurado automaticamente via variável `auth_token`.
+
+### Valores Padrão
+
+Todas as variáveis possuem valores padrão realistas, permitindo testar a API imediatamente após importar a collection.
+
+### Estrutura de URLs
+
+As URLs usam variáveis de path (ex: `:id`) ao invés de valores hardcoded, facilitando reutilização e testes com diferentes IDs.
+
+### Consistência com o Codebase
+
+A collection reflete exatamente:
+- Validações definidas nos validators
+- Estrutura de headers esperada pelo middleware
+- Schema do banco de dados (UUIDs, timestamps, tipos de dados)
+
