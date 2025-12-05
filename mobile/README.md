@@ -255,7 +255,27 @@ O tema e organizado em modulos:
 | `npm run ios` | Abre no simulador iOS |
 | `npm run web` | Abre no navegador |
 | `npm run lint` | Executa o linter |
+| `npm run publish:preview` | Publica no Expo Go (branch preview) |
+| `npm run publish:production` | Publica no Expo Go (branch production) |
 | `npm run reset-project` | Move codigo inicial para app-example e cria app vazio |
+
+---
+
+## Publicacao no Expo Go
+
+O app esta publicado e disponivel no Expo Go:
+
+- **Dashboard**: https://expo.dev/accounts/andersonmsmarinho/projects/spotify-clone-unicap
+- **Project ID**: 46852c7d-1f40-4ade-9ae0-31d27e4e0530
+- **API URL (Producao)**: https://spotify-clone-unicap.vercel.app
+
+Para publicar uma nova versao:
+
+```bash
+npm run publish:preview
+```
+
+Para mais detalhes, consulte [Guia de Publicacao](./docs/PUBLISH_GUIDE.md)
 
 ---
 

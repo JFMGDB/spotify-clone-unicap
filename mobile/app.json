@@ -47,7 +47,18 @@
       "reactCompiler": true
     },
     "extra": {
-      "apiUrl": "http://10.0.0.103:3000"
-    }
+      "apiUrl": "https://spotify-clone-unicap.vercel.app",
+      "router": {},
+      "eas": {
+        "projectId": "46852c7d-1f40-4ade-9ae0-31d27e4e0530"
+      }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/46852c7d-1f40-4ade-9ae0-31d27e4e0530"
+    },
+    "owner": "andersonmsmarinho"
   }
 }
