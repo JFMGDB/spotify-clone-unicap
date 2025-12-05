@@ -1,5 +1,5 @@
 import { sql } from 'drizzle-orm';
-import { db, requireDb, closeConnection } from '../config/db';
+import { requireDb, closeConnection } from '../config/db';
 import { logger } from '../common/utils/logger';
 
 /**
