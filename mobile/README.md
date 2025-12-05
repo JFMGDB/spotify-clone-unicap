@@ -1,36 +1,58 @@
 # Spotify Clone - Mobile
 
-Aplicativo mobile desenvolvido em **React Native + Expo** com **Expo Router** e **TypeScript**.
+> Ultima atualizacao: 05/12/2025
 
-## Início Rápido
+Aplicativo mobile desenvolvido em React Native + Expo SDK 54 com Expo Router e TypeScript.
 
-### Pré-requisitos
+---
+
+## Integrantes
+
+| Nome | RA |
+|------|-----|
+| Jose Felipe Morais Guerra de Barros | 00000853793 |
+| Jamilli Maria Francisca da Silva | 00000854174 |
+| Enio Ramos Bezerra | 00000003364 |
+| Debora Lais Macedo da Silva | 00000851133 |
+| Ailton Cesar Anizio dos Santos | 00000029548 |
+| Jose Gabriel Barros dos Santos | 00000847959 |
+| Walbert Pereira de Lima | 00000851041 |
+| Anderson Marcone da Silva Marinho | 00000853760 |
+
+---
+
+## Inicio Rapido
+
+### Pre-requisitos
 
 - Node.js v20.x LTS ou superior
 - npm ou yarn
-- Expo Go instalado no dispositivo móvel (iOS ou Android)
+- Expo Go instalado no dispositivo movel (iOS ou Android)
 - Ou emulador Android / Simulador iOS configurado
 
-### Instalação
+### Instalacao
 
-1. Entre no diretório do projeto:
-   ```bash
-   cd mobile
-   ```
+1. Entre no diretorio do projeto:
 
-2. Instale as dependências:
-   ```bash
-   npm install
-   ```
+```bash
+cd mobile
+```
 
-3. Configure as variáveis de ambiente (opcional):
-   ```bash
-   # Copie o arquivo de exemplo
-   cp .env.example .env
-   
-   # Edite o .env e configure:
-   # - EXPO_PUBLIC_API_URL (URL base da API backend)
-   ```
+2. Instale as dependencias:
+
+```bash
+npm install
+```
+
+3. Configure as variaveis de ambiente (opcional):
+
+```bash
+# Copie o arquivo de exemplo
+cp .env.example .env
+
+# Edite o .env e configure:
+# - EXPO_PUBLIC_API_URL (URL base da API backend)
+```
 
 ### Executar em Desenvolvimento
 
@@ -38,99 +60,214 @@ Aplicativo mobile desenvolvido em **React Native + Expo** com **Expo Router** e 
 npm start
 ```
 
-Ou use os comandos específicos:
-- `npm run android` - Abre no emulador Android
-- `npm run ios` - Abre no simulador iOS
-- `npm run web` - Abre no navegador
-- `npm run lint` - Executa o linter
+Ou use os comandos especificos:
 
-No output, você encontrará opções para abrir o app em:
-- [Development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), um sandbox limitado para testar desenvolvimento com Expo
+| Comando | Descricao |
+|---------|-----------|
+| `npm run android` | Abre no emulador Android |
+| `npm run ios` | Abre no simulador iOS |
+| `npm run web` | Abre no navegador |
+| `npm run lint` | Executa o linter |
 
 ### Testar no Dispositivo
 
 1. Execute `npm start`
 2. Escaneie o QR Code com:
-   - **iOS**: Câmera nativa ou Expo Go
+   - **iOS**: Camera nativa ou Expo Go
    - **Android**: Expo Go
+
+---
 
 ## Estrutura do Projeto
 
 ```
-spotify-clone/
-  app/                    # Rotas (Expo Router file-based)
-    _layout.tsx          # Root layout
-    (auth)/              # Stack de autenticação
-    (tabs)/              # Navegação principal (tabs)
-    album/               # Rotas de álbuns
-    artist/              # Rotas de artistas
-    player/              # Rotas do player
-    playlist/            # Rotas de playlists
-    index.tsx            # Tela inicial
-  src/
-    features/            # Features por domínio
-      auth/
-      playlists/
-      player/
-      profile/
-      search/
-    shared/             # Código compartilhado
-      components/       # Componentes reutilizáveis
-      hooks/            # Custom hooks
-      lib/              # Bibliotecas (apiClient, etc.)
-      theme/            # Tema (React Native Paper)
-      config/           # Configurações
-    stores/             # Stores Zustand
-  assets/               # Imagens e recursos estáticos
-  components/           # Componentes do template Expo
-  constants/            # Constantes do template
-  hooks/                # Hooks do template
+mobile/
+├── app/                    # Rotas (Expo Router file-based)
+│   ├── _layout.tsx         # Root layout
+│   ├── index.tsx           # Tela inicial
+│   ├── (auth)/             # Stack de autenticacao
+│   │   ├── login.tsx
+│   │   └── register.tsx
+│   ├── (tabs)/             # Navegacao principal (tabs)
+│   │   ├── index.tsx       # Home
+│   │   ├── explore.tsx     # Busca
+│   │   ├── library.tsx     # Biblioteca
+│   │   └── settings.tsx    # Configuracoes
+│   ├── album/[id].tsx      # Detalhes do album
+│   ├── artist/[id].tsx     # Perfil do artista
+│   ├── playlist/[id].tsx   # Detalhes da playlist
+│   └── player/index.tsx    # Player em tela cheia
+├── src/
+│   ├── contexts/           # Contextos React (Auth, Player)
+│   ├── features/           # Features por dominio
+│   │   ├── auth/
+│   │   ├── albums/
+│   │   ├── artists/
+│   │   ├── playlists/
+│   │   ├── tracks/
+│   │   └── player/
+│   └── shared/             # Codigo compartilhado
+│       ├── components/     # Componentes reutilizaveis
+│       ├── hooks/          # Custom hooks
+│       ├── lib/            # Bibliotecas (apiClient, etc.)
+│       ├── theme/          # Tema (cores, tipografia, espacamento)
+│       ├── config/         # Configuracoes
+│       └── utils/          # Utilitarios
+├── assets/                 # Imagens e recursos estaticos
+├── docs/                   # Documentacao
+└── package.json
 ```
+
+---
 
 ## Tecnologias
 
-- **React Native**: Framework mobile
-- **Expo**: Plataforma e ferramentas (~54.0.26)
-- **Expo Router**: Roteamento baseado em arquivos (~6.0.16)
-- **TypeScript**: Tipagem estática (~5.9.2)
-- **React**: 19.1.0
-- **React Native**: 0.81.5
-- **React Navigation**: Navegação nativa
-- **React Native Reanimated**: Animações performáticas
-- **React Native Gesture Handler**: Gestos nativos
+| Tecnologia | Versao | Descricao |
+|------------|--------|-----------|
+| React Native | 0.81.5 | Framework mobile |
+| Expo | ~54.0.26 | Plataforma e ferramentas |
+| Expo Router | ~6.0.16 | Roteamento baseado em arquivos |
+| TypeScript | ~5.9.2 | Tipagem estatica |
+| React | 19.1.0 | Biblioteca de UI |
+| React Navigation | - | Navegacao nativa |
+| React Native Reanimated | - | Animacoes performaticas |
+| React Native Gesture Handler | - | Gestos nativos |
 
-## Desenvolvimento
+---
 
-Você pode começar a desenvolver editando os arquivos dentro do diretório **app**. Este projeto usa [roteamento baseado em arquivos](https://docs.expo.dev/router/introduction).
+## Arquitetura
 
-### Comandos Disponíveis
+O projeto segue uma arquitetura modular baseada em features, aplicando os principios SOLID, DRY e componentizacao.
 
-- `npm start` - Inicia o servidor de desenvolvimento
-- `npm run android` - Abre no emulador Android
-- `npm run ios` - Abre no simulador iOS
-- `npm run web` - Abre no navegador
-- `npm run lint` - Executa o linter
-- `npm run reset-project` - Move código inicial para app-example e cria app vazio
+### Organizacao por Features
 
-## Próximos Passos
+Cada feature representa um dominio de negocio:
 
-1. Configurar React Native Paper e tema (Épico 10)
-2. Implementar telas de autenticação (Épico 2)
-3. Implementar integração com API (Épico 2)
-4. Implementar telas principais (Épicos 4-9)
+```
+features/{nome}/
+├── components/    # Componentes especificos da feature
+├── services/      # Servicos de API
+├── hooks/         # Hooks especificos
+└── types/         # Tipos TypeScript
+```
 
-## Recursos
+### Componentes Compartilhados
 
-- [Expo documentation](https://docs.expo.dev/): Aprenda fundamentos ou vá para tópicos avançados com nossos [guides](https://docs.expo.dev/guides)
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Siga um tutorial passo a passo onde você criará um projeto que roda em Android, iOS e web
-- [Expo Router documentation](https://docs.expo.dev/router/introduction/): Documentação do sistema de roteamento
+Componentes reutilizaveis em toda a aplicacao:
 
-## Comunidade
+| Componente | Descricao |
+|------------|-----------|
+| Button | Botao padronizado |
+| Card | Card generico |
+| Input | Campo de entrada |
+| LoadingSpinner | Indicador de carregamento |
+| ErrorMessage | Mensagem de erro |
+| TrackItem | Item de track na lista |
+| MiniPlayer | Player compacto |
 
-Junte-se à comunidade de desenvolvedores criando apps universais:
+---
 
-- [Expo no GitHub](https://github.com/expo/expo)
-- [Discord community](https://chat.expo.dev)
+## Navegacao
+
+O app utiliza Expo Router com roteamento baseado em arquivos:
+
+### Estrutura de Rotas
+
+| Rota | Descricao |
+|------|-----------|
+| `/` | Tela inicial (redirect) |
+| `/(auth)/login` | Tela de login |
+| `/(auth)/register` | Tela de registro |
+| `/(tabs)` | Navegacao principal |
+| `/(tabs)/index` | Home |
+| `/(tabs)/explore` | Busca |
+| `/(tabs)/library` | Biblioteca |
+| `/(tabs)/settings` | Configuracoes |
+| `/album/[id]` | Detalhes do album |
+| `/artist/[id]` | Perfil do artista |
+| `/playlist/[id]` | Detalhes da playlist |
+| `/player` | Player em tela cheia |
+
+---
+
+## Contextos
+
+### AuthContext
+
+Gerencia o estado de autenticacao:
+
+- Login/Logout
+- Registro de usuario
+- Persistencia do token
+- Usuario atual
+
+### PlayerContext
+
+Gerencia o estado do player de musica:
+
+- Track atual
+- Estado de reproducao (play/pause)
+- Fila de reproducao
+- Controles (proximo, anterior)
+
+---
+
+## Servicos
+
+### API Client
+
+Cliente HTTP configurado com Axios:
+
+- Base URL configuravel
+- Interceptors para autenticacao
+- Tratamento de erros padronizado
+
+### Servicos por Dominio
+
+| Servico | Descricao |
+|---------|-----------|
+| albums.service | Operacoes de albuns |
+| artists.service | Operacoes de artistas |
+| playlists.service | Operacoes de playlists |
+| tracks.service | Operacoes de tracks |
+| users.service | Operacoes de usuarios |
+
+---
+
+## Tema
+
+O tema e organizado em modulos:
+
+| Modulo | Descricao |
+|--------|-----------|
+| colors.ts | Paleta de cores |
+| typography.ts | Estilos de texto |
+| spacing.ts | Espacamentos padronizados |
+
+---
+
+## Comandos Disponiveis
+
+| Comando | Descricao |
+|---------|-----------|
+| `npm start` | Inicia o servidor de desenvolvimento |
+| `npm run android` | Abre no emulador Android |
+| `npm run ios` | Abre no simulador iOS |
+| `npm run web` | Abre no navegador |
+| `npm run lint` | Executa o linter |
+| `npm run reset-project` | Move codigo inicial para app-example e cria app vazio |
+
+---
+
+## Documentacao Adicional
+
+- [Guia de Execucao](./docs/EXECUTION_GUIDE.md) - Como rodar o app em diferentes ambientes
+- [Guia de Testes](./docs/TESTING_GUIDE.md) - Roteiro completo de testes
+
+---
+
+## Recursos Externos
+
+- [Documentacao do Expo](https://docs.expo.dev/)
+- [Documentacao do Expo Router](https://docs.expo.dev/router/introduction/)
+- [React Native](https://reactnative.dev/)

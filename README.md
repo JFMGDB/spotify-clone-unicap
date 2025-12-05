@@ -1,40 +1,60 @@
-## Spotify Clone – Monorepo (Backend + Mobile)
+# Spotify Clone - Monorepo (Backend + Mobile)
 
-Este repositório contém o projeto **Spotify Clone**, integrado às disciplinas de **AOS (Backend)** e **Programação Mobile (React Native + Expo)**.
+> Ultima atualizacao: 05/12/2025
 
-- **Backend**: API REST em **Node.js + Express.js + PostgreSQL (Neon DB)**.
-- **Mobile**: App em **React Native + Expo**, com **Expo Router** e **Zustand**.
+Este repositorio contem o projeto **Spotify Clone**, desenvolvido como trabalho integrado das disciplinas de **Arquitetura Orientada a Servicos (Backend)** e **Programacao Mobile (React Native + Expo)** da UNICAP.
 
-Este README foca em **estrutura de pastas e setup**.
+- **Backend**: API REST em Node.js + Express.js + PostgreSQL (Neon DB)
+- **Mobile**: Aplicativo em React Native + Expo SDK 54 com Expo Router
 
 ---
 
-## 📋 Estrutura Geral do Monorepo
+## Integrantes
+
+| Nome | RA |
+|------|-----|
+| Jose Felipe Morais Guerra de Barros | 00000853793 |
+| Jamilli Maria Francisca da Silva | 00000854174 |
+| Enio Ramos Bezerra | 00000003364 |
+| Debora Lais Macedo da Silva | 00000851133 |
+| Ailton Cesar Anizio dos Santos | 00000029548 |
+| Jose Gabriel Barros dos Santos | 00000847959 |
+| Walbert Pereira de Lima | 00000851041 |
+| Anderson Marcone da Silva Marinho | 00000853760 |
+
+---
+
+## Estrutura do Monorepo
 
 ```
 .
 ├── README.md
-├── backend/          # API REST (Express + TypeScript + Drizzle ORM)
-└── mobile/           # App Mobile (React Native + Expo + Expo Router)
+├── backend/              # API REST (Express + TypeScript + Drizzle ORM)
+│   ├── docs/             # Documentacao do backend
+│   └── src/              # Codigo fonte
+└── mobile/               # App Mobile (React Native + Expo + Expo Router)
+    ├── docs/             # Documentacao do mobile
+    ├── app/              # Rotas (Expo Router)
+    └── src/              # Codigo fonte
 ```
 
 ---
 
-## Início Rápido
+## Inicio Rapido
 
 ### Backend
 
-1. Entre no diretório do backend:
+1. Entre no diretorio do backend:
    ```bash
    cd backend
    ```
 
-2. Instale as dependências:
+2. Instale as dependencias:
    ```bash
    npm install
    ```
 
-3. Configure as variáveis de ambiente:
+3. Configure as variaveis de ambiente:
    ```bash
    # Copie o arquivo de exemplo
    cp .env.example .env
@@ -49,18 +69,18 @@ Este README foca em **estrutura de pastas e setup**.
    npm run dev
    ```
 
-   O servidor estará disponível em `http://localhost:3000`
+   O servidor estara disponivel em `http://localhost:3000`
 
    Para mais detalhes, consulte [backend/README.md](./backend/README.md)
 
 ### Mobile
 
-1. Entre no diretório do mobile:
+1. Entre no diretorio do mobile:
    ```bash
    cd mobile
    ```
 
-2. Instale as dependências:
+2. Instale as dependencias:
    ```bash
    npm install
    ```
@@ -83,23 +103,24 @@ Este README foca em **estrutura de pastas e setup**.
 ```
 backend/
 ├── src/
-│   ├── config/          # Configurações (DB, env)
+│   ├── config/          # Configuracoes (DB, env)
 │   ├── db/              # Schema Drizzle, migrations, seeds
-│   ├── common/          # Código compartilhado
+│   ├── common/          # Codigo compartilhado
 │   │   ├── middleware/  # Middlewares (auth, error, validation)
 │   │   ├── errors/      # Classes de erro customizadas
-│   │   ├── utils/       # Utilitários
+│   │   ├── utils/       # Utilitarios
 │   │   └── types/       # Tipos TypeScript
-│   ├── modules/         # Módulos por domínio
+│   ├── modules/         # Modulos por dominio
 │   │   ├── auth/
 │   │   ├── users/
 │   │   ├── artists/
 │   │   ├── albums/
 │   │   ├── tracks/
 │   │   └── playlists/
-│   ├── routes/          # Agregação de rotas
+│   ├── routes/          # Agregacao de rotas
 │   └── tests/           # Testes automatizados
-├── drizzle.config.ts     # Configuração do Drizzle Kit
+├── docs/                # Documentacao
+├── drizzle.config.ts    # Configuracao do Drizzle Kit
 └── package.json
 ```
 
@@ -108,21 +129,22 @@ backend/
 ```
 mobile/
 ├── app/                 # Rotas (Expo Router file-based)
-│   ├── (auth)/         # Stack de autenticação
-│   ├── (tabs)/         # Navegação principal (tabs)
+│   ├── (auth)/          # Stack de autenticacao
+│   ├── (tabs)/          # Navegacao principal (tabs)
 │   ├── playlist/
 │   ├── album/
 │   ├── artist/
 │   └── player/
 ├── src/
-│   ├── features/       # Features por domínio
-│   ├── shared/         # Código compartilhado
-│   │   ├── components/ # Componentes reutilizáveis
-│   │   ├── hooks/      # Custom hooks
-│   │   ├── lib/        # Bibliotecas (apiClient, etc.)
-│   │   ├── theme/      # Tema (React Native Paper)
-│   │   └── config/     # Configurações
-│   └── stores/         # Stores Zustand
+│   ├── contexts/        # Contextos React (Auth, Player)
+│   ├── features/        # Features por dominio
+│   └── shared/          # Codigo compartilhado
+│       ├── components/  # Componentes reutilizaveis
+│       ├── hooks/       # Custom hooks
+│       ├── lib/         # Bibliotecas (apiClient, etc.)
+│       ├── theme/       # Tema (cores, tipografia, espacamento)
+│       └── config/      # Configuracoes
+├── docs/                # Documentacao
 └── package.json
 ```
 
@@ -131,57 +153,88 @@ mobile/
 ## Tecnologias
 
 ### Backend
-- **Express.js**: Framework web
-- **TypeScript**: Tipagem estática
-- **Drizzle ORM**: ORM type-safe para PostgreSQL
-- **PostgreSQL (Neon DB)**: Banco de dados na nuvem
-- **Jest**: Framework de testes
-- **bcrypt**: Hash de senhas
-- **jsonwebtoken**: Autenticação JWT
+
+| Tecnologia | Descricao |
+|------------|-----------|
+| Express.js | Framework web |
+| TypeScript | Tipagem estatica |
+| Drizzle ORM | ORM type-safe para PostgreSQL |
+| PostgreSQL (Neon DB) | Banco de dados na nuvem |
+| Jest | Framework de testes |
+| bcrypt | Hash de senhas |
+| jsonwebtoken | Autenticacao JWT |
 
 ### Mobile
-- **React Native**: Framework mobile
-- **Expo**: Plataforma e ferramentas
-- **Expo Router**: Roteamento baseado em arquivos
-- **TypeScript**: Tipagem estática
-- **Zustand**: Gerenciamento de estado
-- **React Native Paper**: UI Kit
-- **Axios**: Cliente HTTP
+
+| Tecnologia | Descricao |
+|------------|-----------|
+| React Native | Framework mobile |
+| Expo SDK 54 | Plataforma e ferramentas |
+| Expo Router | Roteamento baseado em arquivos |
+| TypeScript | Tipagem estatica |
+| React 19.1 | Biblioteca de UI |
+| Axios | Cliente HTTP |
 
 ---
 
-## Documentação
+## Metodologias
 
-- **Backend README**: [backend/README.md](./backend/README.md)
-- **Mobile README**: [mobile/README.md](./mobile/README.md)
-- **Setup Neon DB**: [backend/setup-neon-db.md](./backend/setup-neon-db.md)
+O projeto segue as seguintes metodologias e principios:
+
+- **SOLID**: Principios de design orientado a objetos
+- **DRY (Don't Repeat Yourself)**: Evitar duplicacao de codigo
+- **Componentizacao**: Componentes reutilizaveis e modulares
+- **Arquitetura Modular**: Separacao por dominios de negocio
+
+---
+
+## Documentacao
+
+### Backend
+
+- [README do Backend](./backend/README.md) - Visao geral e setup
+- [Guia de Implementacao](./backend/docs/IMPLEMENTATION_GUIDE.md) - Configuracao detalhada
+- [Guia do Postman](./backend/docs/POSTMAN_GUIDE.md) - Testes da API
+
+### Mobile
+
+- [README do Mobile](./mobile/README.md) - Visao geral e setup
+- [Guia de Execucao](./mobile/docs/EXECUTION_GUIDE.md) - Como rodar o app
+- [Guia de Testes](./mobile/docs/TESTING_GUIDE.md) - Roteiro completo de testes
 
 ---
 
 ## Status do Projeto
 
-### Épico 1 - Infraestrutura e Setup ✅
+### Infraestrutura e Setup
+
 - [x] Estrutura de monorepo criada
 - [x] Backend configurado (Express + TypeScript + Drizzle)
 - [x] Mobile configurado (Expo + Expo Router + TypeScript)
 - [x] Arquivos de ambiente e .gitignore configurados
-- [ ] Neon DB configurado (requer ação manual - ver [SETUP_NEON_DB.md](./backend/SETUP_NEON_DB.md))
+- [x] Documentacao organizada
 
-### Próximos Épicos
-- Épico 2: Autenticação e Segurança
-- Épico 3: Modelagem e Banco de Dados
-- Épico 4-7: CRUD das Entidades
-- Épico 8: Relacionamentos
-- Épico 9-13: Telas, UI/UX, Testes, Deploy
+### Funcionalidades Backend
+
+- [x] Autenticacao (registro e login)
+- [x] CRUD de Artistas
+- [x] CRUD de Albuns
+- [x] CRUD de Tracks
+- [x] CRUD de Playlists
+- [x] Gerenciamento de tracks em playlists
+
+### Funcionalidades Mobile
+
+- [x] Telas de autenticacao
+- [x] Navegacao por tabs
+- [x] Tela Home
+- [x] Tela de Busca
+- [x] Tela de Biblioteca
+- [x] Detalhes de Playlist/Album/Artista
+- [x] Player de musica
 
 ---
 
-## Equipe
+## Licenca
 
-*Nomes e RAs dos integrantes serão adicionados aqui*
-
----
-
-## Licença
-
-Este é um projeto acadêmico desenvolvido para as disciplinas de AOS e Programação Mobile - UNICAP 2025.2.
+Este e um projeto academico desenvolvido para as disciplinas de Arquitetura Orientada a Servicos e Programacao Mobile - UNICAP 2025.2.

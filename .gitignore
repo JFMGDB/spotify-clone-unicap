@@ -50,5 +50,3 @@ coverage/
 backend/src/db/migrations/*.sql
 !backend/src/db/migrations/.gitkeep
 
-docs/
-

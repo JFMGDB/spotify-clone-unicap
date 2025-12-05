@@ -1,43 +1,52 @@
 # Spotify Clone - Backend
 
-API REST desenvolvida em **Node.js + Express.js + TypeScript** com **Drizzle ORM** e **PostgreSQL (Neon DB)**.
+> Ultima atualizacao: 05/12/2025
 
-## 👥 Integrantes
+API REST desenvolvida em Node.js + Express.js + TypeScript com Drizzle ORM e PostgreSQL (Neon DB).
 
-- José Felipe Morais Guerra de Barros - RA: 00000853793
-- Jamilli Maria Francisca da Silva - RA: 00000854174
-- Enio Ramos Bezerra - RA: 00000003364
-- Débora Laís Macedo da Silva - RA: 00000851133
-- Ailton Cesar Anizio dos Santos - RA: 00000029548
-- José Gabriel Barros dos Santos - RA: 00000847959
-- Walbert Pereira de Lima - RA: 00000851041
-- Anderson Marcone da Silva Marinho - RA: 00000853760
+---
 
-## 🚀 Início Rápido
+## Integrantes
 
-### Pré-requisitos
+| Nome | RA |
+|------|-----|
+| Jose Felipe Morais Guerra de Barros | 00000853793 |
+| Jamilli Maria Francisca da Silva | 00000854174 |
+| Enio Ramos Bezerra | 00000003364 |
+| Debora Lais Macedo da Silva | 00000851133 |
+| Ailton Cesar Anizio dos Santos | 00000029548 |
+| Jose Gabriel Barros dos Santos | 00000847959 |
+| Walbert Pereira de Lima | 00000851041 |
+| Anderson Marcone da Silva Marinho | 00000853760 |
+
+---
+
+## Inicio Rapido
+
+### Pre-requisitos
 
 - Node.js v20.x LTS ou superior
 - npm ou yarn
 - Conta no Neon DB (ou PostgreSQL local)
 
-### Instalação
+### Instalacao
 
-1. **Instale as dependências:**
+1. **Instale as dependencias:**
+
 ```bash
 cd backend
 npm install
 ```
 
-2. **Configure as variáveis de ambiente:**
+2. **Configure as variaveis de ambiente:**
 
-Crie um arquivo `.env` na raiz de `backend/` com o seguinte conteúdo:
+Crie um arquivo `.env` na raiz de `backend/` com o seguinte conteudo:
 
 ```env
 # Banco de Dados
 DATABASE_URL=postgresql://user:password@host/database?sslmode=require
 
-# JWT (Autenticação)
+# JWT (Autenticacao)
 JWT_SECRET=sua-chave-secreta-super-segura-aqui
 JWT_EXPIRES_IN=1h
 
@@ -50,10 +59,11 @@ CORS_ORIGIN=http://localhost:8081
 ```
 
 **Como obter DATABASE_URL:**
-- **Neon DB** (recomendado): Acesse [https://neon.tech](https://neon.tech) → Crie projeto → Copie a connection string
+- **Neon DB** (recomendado): Acesse https://neon.tech, crie um projeto e copie a connection string
 - **PostgreSQL local**: `postgresql://usuario:senha@localhost:5432/nome_banco?sslmode=disable`
 
 **Como gerar JWT_SECRET:**
+
 ```bash
 # Linux/Mac
 openssl rand -base64 32
@@ -63,17 +73,19 @@ openssl rand -base64 32
 ```
 
 3. **Aplique as migrations:**
+
 ```bash
 npm run db:generate
 npm run db:migrate
 ```
 
 4. **Inicie o servidor:**
+
 ```bash
 npm run dev
 ```
 
-O servidor estará disponível em `http://localhost:3000`
+O servidor estara disponivel em `http://localhost:3000`
 
 ### Testar Health Check
 
@@ -82,70 +94,159 @@ curl http://localhost:3000/health
 ```
 
 Resposta esperada:
+
 ```json
 {
   "status": "ok"
 }
 ```
 
-## 📁 Estrutura do Projeto
+---
+
+## Estrutura do Projeto
 
 ```
 backend/
-  src/
-    config/          # Configurações (DB, env, logger)
-    db/              # Schema Drizzle, migrations, seeds
-    common/          # Código compartilhado (middlewares, utils, types)
-    modules/         # Módulos por domínio (auth, users, artists, etc.)
-    routes/          # Agregação de rotas
-    tests/           # Testes automatizados
-  drizzle.config.ts  # Configuração do Drizzle Kit
+├── src/
+│   ├── config/          # Configuracoes (DB, env, logger)
+│   ├── db/              # Schema Drizzle, migrations, seeds
+│   ├── common/          # Codigo compartilhado (middlewares, utils, types)
+│   ├── modules/         # Modulos por dominio (auth, users, artists, etc.)
+│   ├── routes/          # Agregacao de rotas
+│   └── tests/           # Testes automatizados
+├── docs/                # Documentacao
+├── drizzle.config.ts    # Configuracao do Drizzle Kit
+└── package.json
 ```
 
-## 🛠️ Scripts Disponíveis
+---
 
-- `npm run dev` - Inicia servidor em modo desenvolvimento (nodemon)
-- `npm run build` - Compila TypeScript para JavaScript
-- `npm run start` - Inicia servidor em produção (após build)
-- `npm test` - Executa testes
-- `npm run test:watch` - Executa testes em modo watch
-- `npm run test:coverage` - Gera relatório de cobertura
-- `npm run db:generate` - Gera migrations do Drizzle
-- `npm run db:migrate` - Aplica migrations no banco
-- `npm run db:push` - Push direto do schema (dev apenas)
-- `npm run db:studio` - Abre Drizzle Studio (interface visual do banco)
-- `npm run db:seed` - Popula o banco com dados de exemplo
+## Scripts Disponiveis
 
-## 🔧 Tecnologias
+| Script | Descricao |
+|--------|-----------|
+| `npm run dev` | Inicia servidor em modo desenvolvimento (nodemon) |
+| `npm run build` | Compila TypeScript para JavaScript |
+| `npm run start` | Inicia servidor em producao (apos build) |
+| `npm test` | Executa testes |
+| `npm run test:watch` | Executa testes em modo watch |
+| `npm run test:coverage` | Gera relatorio de cobertura |
+| `npm run db:generate` | Gera migrations do Drizzle |
+| `npm run db:migrate` | Aplica migrations no banco |
+| `npm run db:push` | Push direto do schema (dev apenas) |
+| `npm run db:studio` | Abre Drizzle Studio (interface visual do banco) |
+| `npm run db:seed` | Popula o banco com dados de exemplo |
 
-- **Express.js**: Framework web
-- **TypeScript**: Tipagem estática
-- **Drizzle ORM**: ORM type-safe para PostgreSQL
-- **PostgreSQL (Neon DB)**: Banco de dados
-- **Jest**: Framework de testes
-- **bcrypt**: Hash de senhas
-- **jsonwebtoken**: Autenticação JWT
+---
 
-## 📚 Documentação Adicional
+## Tecnologias
 
-- **[IMPLEMENTATION_GUIDE.md](./IMPLEMENTATION_GUIDE.md)** - Guia detalhado de implementação e troubleshooting
-- **[POSTMAN_GUIDE.md](./POSTMAN_GUIDE.md)** - Guia de uso da collection do Postman
-- **[DISTRIBUICAO_TRABALHO.md](./DISTRIBUICAO_TRABALHO.md)** - Distribuição de trabalho entre desenvolvedores
+| Tecnologia | Descricao |
+|------------|-----------|
+| Express.js | Framework web |
+| TypeScript | Tipagem estatica |
+| Drizzle ORM | ORM type-safe para PostgreSQL |
+| PostgreSQL (Neon DB) | Banco de dados |
+| Jest | Framework de testes |
+| bcrypt | Hash de senhas |
+| jsonwebtoken | Autenticacao JWT |
 
-## 📝 Estrutura de Módulos
+---
 
-O projeto segue uma arquitetura modular baseada em domínios:
+## Arquitetura
 
-- **auth** - Autenticação (register, login)
-- **users** - Gerenciamento de usuários
-- **artists** - CRUD de artistas
-- **albums** - CRUD de álbuns
-- **tracks** - CRUD de músicas/faixas
-- **playlists** - CRUD de playlists e gerenciamento de tracks
+O projeto segue uma arquitetura modular baseada em dominios, aplicando os principios SOLID e DRY.
 
-Cada módulo segue o padrão:
-- `{module}.controller.ts` - Handlers HTTP
-- `{module}.service.ts` - Lógica de negócio
-- `{module}.routes.ts` - Definição de rotas
-- `{module}.validators.ts` - Validações (quando aplicável)
+### Estrutura de Modulos
 
+Cada modulo segue o padrao:
+
+```
+modules/{nome}/
+├── {nome}.controller.ts   # Handlers HTTP
+├── {nome}.service.ts      # Logica de negocio
+├── {nome}.routes.ts       # Definicao de rotas
+└── {nome}.validators.ts   # Validacoes (quando aplicavel)
+```
+
+### Modulos Disponiveis
+
+| Modulo | Descricao |
+|--------|-----------|
+| auth | Autenticacao (register, login) |
+| users | Gerenciamento de usuarios |
+| artists | CRUD de artistas |
+| albums | CRUD de albuns |
+| tracks | CRUD de musicas/faixas |
+| playlists | CRUD de playlists e gerenciamento de tracks |
+
+---
+
+## Endpoints da API
+
+### Autenticacao
+
+| Metodo | Endpoint | Descricao |
+|--------|----------|-----------|
+| POST | `/api/auth/register` | Registrar novo usuario |
+| POST | `/api/auth/login` | Fazer login |
+
+### Usuarios
+
+| Metodo | Endpoint | Descricao |
+|--------|----------|-----------|
+| GET | `/api/users/me` | Obter usuario autenticado |
+| GET | `/api/users/:id` | Obter usuario por ID |
+
+### Artistas
+
+| Metodo | Endpoint | Descricao |
+|--------|----------|-----------|
+| GET | `/api/artists` | Listar artistas |
+| GET | `/api/artists/:id` | Obter artista por ID |
+| POST | `/api/artists` | Criar artista |
+| PUT | `/api/artists/:id` | Atualizar artista |
+| DELETE | `/api/artists/:id` | Deletar artista |
+
+### Albuns
+
+| Metodo | Endpoint | Descricao |
+|--------|----------|-----------|
+| GET | `/api/albums` | Listar albuns |
+| GET | `/api/albums/:id` | Obter album por ID |
+| GET | `/api/albums/artist/:artistId` | Listar albuns de um artista |
+| POST | `/api/albums` | Criar album |
+| PUT | `/api/albums/:id` | Atualizar album |
+| DELETE | `/api/albums/:id` | Deletar album |
+
+### Tracks
+
+| Metodo | Endpoint | Descricao |
+|--------|----------|-----------|
+| GET | `/api/tracks` | Listar tracks |
+| GET | `/api/tracks/:id` | Obter track por ID |
+| GET | `/api/tracks/album/:albumId` | Listar tracks de um album |
+| GET | `/api/tracks/artist/:artistId` | Listar tracks de um artista |
+| POST | `/api/tracks` | Criar track |
+| PUT | `/api/tracks/:id` | Atualizar track |
+| DELETE | `/api/tracks/:id` | Deletar track |
+
+### Playlists
+
+| Metodo | Endpoint | Descricao |
+|--------|----------|-----------|
+| GET | `/api/playlists` | Listar playlists |
+| GET | `/api/playlists/:id` | Obter playlist por ID |
+| GET | `/api/playlists/:id/tracks` | Listar tracks de uma playlist |
+| POST | `/api/playlists` | Criar playlist |
+| POST | `/api/playlists/:id/tracks` | Adicionar track a playlist |
+| PUT | `/api/playlists/:id` | Atualizar playlist |
+| DELETE | `/api/playlists/:id` | Deletar playlist |
+| DELETE | `/api/playlists/:id/tracks/:trackId` | Remover track da playlist |
+
+---
+
+## Documentacao Adicional
+
+- [Guia de Implementacao](./docs/IMPLEMENTATION_GUIDE.md) - Configuracao detalhada e troubleshooting
+- [Guia do Postman](./docs/POSTMAN_GUIDE.md) - Como testar a API com Postman
