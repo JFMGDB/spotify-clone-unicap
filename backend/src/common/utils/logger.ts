@@ -1,11 +1,10 @@
-import { env } from '../../config/env';
-
 /** Sistema de logging centralizado (suprime logs em produção) */
 class Logger {
   private readonly isDevelopment: boolean;
 
   constructor() {
-    this.isDevelopment = env.NODE_ENV === 'development';
+    // Usa process.env diretamente para evitar dependência circular
+    this.isDevelopment = (process.env.NODE_ENV || 'development') === 'development';
   }
 
   /** Log de informações (apenas em desenvolvimento) */

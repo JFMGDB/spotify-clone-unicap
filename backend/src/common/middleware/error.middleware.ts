@@ -42,16 +42,18 @@ function createErrorResponse(
 /** Middleware para validar resultados do express-validator */
 export function validateRequest(
   req: Request,
-  res: Response,
+  _res: Response,
   next: NextFunction
 ): void {
   const errors = validationResult(req);
   
   if (!errors.isEmpty()) {
+    // Log dos erros de validação para debug
     const errorMessages = errors.array().map(err => ({
       field: err.type === 'field' ? err.path : undefined,
       message: err.msg,
     }));
+    logger.debug('Erros de validação:', errorMessages);
     
     throw new AppError(
       'Dados de entrada inválidos',
