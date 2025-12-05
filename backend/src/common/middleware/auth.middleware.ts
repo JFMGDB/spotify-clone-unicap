@@ -49,7 +49,8 @@ export async function authMiddleware(
     // Verifica e decodifica token
     let decoded: JwtPayload;
     try {
-      decoded = jwt.verify(token, env.JWT_SECRET) as JwtPayload;
+      const secret = env.JWT_SECRET || 'default-secret';
+      decoded = jwt.verify(token, secret) as JwtPayload;
     } catch (error) {
       throw new AppError('Token inválido ou expirado', 401, ErrorCodes.INVALID_TOKEN);
     }
@@ -101,7 +102,8 @@ export async function optionalAuthMiddleware(
 
     // Tenta decodificar o token
     try {
-      const decoded = jwt.verify(token, env.JWT_SECRET) as JwtPayload;
+      const secret = env.JWT_SECRET || 'default-secret';
+      const decoded = jwt.verify(token, secret) as JwtPayload;
       
       // Verifica se usuario existe
       const database = requireDb();
