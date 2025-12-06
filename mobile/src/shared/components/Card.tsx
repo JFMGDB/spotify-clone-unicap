@@ -1,5 +1,5 @@
 import React from 'react';
-import { TouchableOpacity, StyleSheet, View, Image, Text, ViewStyle } from 'react-native';
+import { TouchableOpacity, StyleSheet, View, Image, Text, ViewStyle, useWindowDimensions } from 'react-native';
 import { colors } from '../theme/colors';
 import { spacing } from '../theme/spacing';
 import { typography } from '../theme/typography';
@@ -13,10 +13,22 @@ interface CardProps {
 }
 
 export function Card({ title, subtitle, imageUrl, onPress, style }: CardProps) {
+  const { width } = useWindowDimensions();
+  
+  const cardStyle = StyleSheet.flatten([styles.card, style]);
+  const cardWidth = typeof cardStyle.width === 'number' 
+    ? cardStyle.width 
+    : width * 0.4;
+  const imageHeight = Math.max(120, Math.min(200, cardWidth * 1.0));
+
   const content = (
     <View style={[styles.card, style]}>
       {imageUrl && (
-        <Image source={{ uri: imageUrl }} style={styles.image} resizeMode="cover" />
+        <Image 
+          source={{ uri: imageUrl }} 
+          style={[styles.image, { height: imageHeight }]} 
+          resizeMode="cover" 
+        />
       )}
       <View style={styles.content}>
         <Text style={styles.title} numberOfLines={2}>
@@ -47,7 +59,6 @@ const styles = StyleSheet.create({
   },
   image: {
     width: '100%',
-    height: 160,
     backgroundColor: colors.backgroundSecondary,
   },
   content: {

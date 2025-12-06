@@ -10,7 +10,7 @@ import { colors } from '@/src/shared/theme/colors';
 import { spacing } from '@/src/shared/theme/spacing';
 import { typography } from '@/src/shared/theme/typography';
 import { router } from 'expo-router';
-import { usePlayer } from '@/src/contexts/PlayerContext';
+import { useTrackPlayer } from '@/src/shared/hooks/useTrackPlayer';
 import { getErrorMessage } from '@/src/shared/utils/errorHandler';
 
 export default function ExploreScreen() {
@@ -20,7 +20,7 @@ export default function ExploreScreen() {
   const [albums, setAlbums] = useState<Album[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const { play } = usePlayer();
+  const { playTrack } = useTrackPlayer();
   const searchTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const performSearch = async (query: string) => {
@@ -46,7 +46,6 @@ export default function ExploreScreen() {
       setArtists(artistsData);
       setAlbums(albumsData);
     } catch (err: any) {
-      console.error('Erro na busca:', err);
       const errorMessage = getErrorMessage(err);
       setError(errorMessage);
       setTracks([]);
@@ -90,28 +89,7 @@ export default function ExploreScreen() {
   }, []);
 
   const handlePlayTrack = async (track: Track) => {
-    await play(
-      {
-        id: track.id,
-        title: track.title,
-        artist: track.artist?.name || 'Artista desconhecido',
-        artistId: track.artistId,
-        duration: track.duration,
-        audioUrl: track.audioUrl,
-        albumId: track.albumId,
-        coverUrl: track.album?.coverUrl,
-      },
-      tracks.map((t) => ({
-        id: t.id,
-        title: t.title,
-        artist: t.artist?.name || 'Artista desconhecido',
-        artistId: t.artistId,
-        duration: t.duration,
-        audioUrl: t.audioUrl,
-        albumId: t.albumId,
-        coverUrl: t.album?.coverUrl,
-      }))
-    );
+    await playTrack(track, tracks);
   };
 
   return (

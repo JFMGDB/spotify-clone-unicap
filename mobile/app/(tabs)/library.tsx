@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, useWindowDimensions } from 'react-native';
 import { useAuth } from '@/src/contexts/AuthContext';
 import { playlistsService, Playlist } from '@/src/features/playlists/services/playlists.service';
 import { albumsService, Album } from '@/src/features/albums/services/albums.service';
@@ -17,12 +17,16 @@ import { getErrorMessage } from '@/src/shared/utils/errorHandler';
 
 export default function LibraryScreen() {
   const { user } = useAuth();
+  const { width } = useWindowDimensions();
   const [playlists, setPlaylists] = useState<Playlist[]>([]);
   const [albums, setAlbums] = useState<Album[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [showCreateModal, setShowCreateModal] = useState(false);
   const { createPlaylist } = usePlaylistActions();
+
+  const cardWidth = (width - spacing.lg * 2 - spacing.sm * 2) / 2;
+  const iconSize = Math.max(20, Math.min(28, width * 0.06));
 
   useEffect(() => {
     if (user) {
@@ -72,7 +76,7 @@ export default function LibraryScreen() {
           style={styles.addButton}
           onPress={() => setShowCreateModal(true)}
         >
-          <IconSymbol name="plus" size={24} color={colors.primary} />
+          <IconSymbol name="plus" size={iconSize} color={colors.primary} />
         </TouchableOpacity>
       </View>
 
@@ -95,7 +99,7 @@ export default function LibraryScreen() {
                 subtitle={item.description}
                 imageUrl={item.coverUrl}
                 onPress={() => router.push(`/playlist/${item.id}`)}
-                style={styles.card}
+                style={[styles.card, { width: cardWidth }]}
               />
             )}
             contentContainerStyle={styles.listContent}
@@ -116,7 +120,7 @@ export default function LibraryScreen() {
                 subtitle={item.artist?.name}
                 imageUrl={item.coverUrl}
                 onPress={() => router.push(`/album/${item.id}`)}
-                style={styles.card}
+                style={[styles.card, { width: cardWidth }]}
               />
             )}
             contentContainerStyle={styles.listContent}
@@ -166,9 +170,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.lg,
   },
   card: {
-    flex: 1,
     margin: spacing.sm,
-    maxWidth: '48%',
   },
   empty: {
     flex: 1,

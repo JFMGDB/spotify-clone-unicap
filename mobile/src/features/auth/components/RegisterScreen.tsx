@@ -103,7 +103,11 @@ export function RegisterScreen() {
             placeholder="Confirme sua senha"
           />
 
-          {error ? <Text style={styles.error}>{error}</Text> : null}
+          {error ? (
+            <View style={styles.errorContainer}>
+              <Text style={styles.error}>{error}</Text>
+            </View>
+          ) : null}
 
           <Button
             title="Cadastrar"
@@ -151,11 +155,19 @@ const styles = StyleSheet.create({
   button: {
     marginTop: spacing.md,
   },
+  errorContainer: {
+    backgroundColor: 'rgba(226, 33, 52, 0.1)',
+    borderRadius: 8,
+    padding: spacing.md,
+    marginBottom: spacing.md,
+    borderWidth: 1,
+    borderColor: 'rgba(226, 33, 52, 0.3)',
+  },
   error: {
     ...typography.caption,
     color: colors.error,
-    marginBottom: spacing.sm,
     textAlign: 'center',
+    lineHeight: 20,
   },
   footer: {
     flexDirection: 'row',

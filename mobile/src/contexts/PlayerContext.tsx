@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useRef, useEffect, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useRef, useEffect, useCallback, ReactNode } from 'react';
 import { Audio } from 'expo-av';
 
 interface Track {
@@ -26,6 +26,7 @@ interface PlayerContextType {
   seekTo: (position: number) => Promise<void>;
   addToQueue: (tracks: Track[]) => void;
   clearQueue: () => void;
+  stop: () => Promise<void>;
 }
 
 const PlayerContext = createContext<PlayerContextType | undefined>(undefined);
@@ -42,6 +43,7 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
   const positionUpdateIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const queueRef = useRef<Track[]>([]);
   const currentIndexRef = useRef<number>(-1);
+  const nextRef = useRef<(() => Promise<void>) | null>(null);
 
   useEffect(() => {
     return () => {
@@ -114,7 +116,9 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
           if (status.didJustFinish) {
             // Só avança se houver próxima música na queue
             if (queueRef.current.length > 0 && currentIndexRef.current < queueRef.current.length - 1) {
-              next();
+              if (nextRef.current) {
+                nextRef.current();
+              }
             } else {
               setIsPlaying(false);
               setPosition(0);
@@ -164,6 +168,8 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
     }
   };
 
+  nextRef.current = next;
+
   const previous = async () => {
     if (queueRef.current.length > 0 && currentIndexRef.current > 0) {
       const prevIndex = currentIndexRef.current - 1;
@@ -193,12 +199,36 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
     });
   };
 
-  const clearQueue = () => {
+  const clearQueue = useCallback(() => {
     setQueue([]);
     queueRef.current = [];
     setCurrentIndex(-1);
     currentIndexRef.current = -1;
-  };
+  }, []);
+
+  const stop = useCallback(async () => {
+    try {
+      if (soundRef.current) {
+        await soundRef.current.stopAsync();
+        await soundRef.current.unloadAsync();
+        soundRef.current = null;
+      }
+      if (positionUpdateIntervalRef.current) {
+        clearInterval(positionUpdateIntervalRef.current);
+        positionUpdateIntervalRef.current = null;
+      }
+      setIsPlaying(false);
+      setCurrentTrack(null);
+      setPosition(0);
+      setDuration(0);
+      setQueue([]);
+      queueRef.current = [];
+      setCurrentIndex(-1);
+      currentIndexRef.current = -1;
+    } catch (error) {
+      console.error('Erro ao parar reprodução:', error);
+    }
+  }, []);
 
   return (
     <PlayerContext.Provider
@@ -216,6 +246,7 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
         seekTo,
         addToQueue,
         clearQueue,
+        stop,
       }}
     >
       {children}

@@ -61,12 +61,14 @@ const styles = StyleSheet.create({
   info: {
     flex: 1,
     flexShrink: 1,
+    minWidth: 0,
     marginRight: spacing.md,
   },
   title: {
     ...typography.body,
     color: colors.text,
     marginBottom: spacing.xs,
+    flexShrink: 1,
   },
   artist: {
     ...typography.caption,

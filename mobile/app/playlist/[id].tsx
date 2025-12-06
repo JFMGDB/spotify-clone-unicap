@@ -8,7 +8,7 @@ import { ErrorMessage } from '@/src/shared/components/ErrorMessage';
 import { colors } from '@/src/shared/theme/colors';
 import { spacing } from '@/src/shared/theme/spacing';
 import { typography } from '@/src/shared/theme/typography';
-import { usePlayer } from '@/src/contexts/PlayerContext';
+import { useTrackPlayer } from '@/src/shared/hooks/useTrackPlayer';
 import { getErrorMessage } from '@/src/shared/utils/errorHandler';
 
 export default function PlaylistDetailScreen() {
@@ -17,7 +17,7 @@ export default function PlaylistDetailScreen() {
   const [tracks, setTracks] = useState<PlaylistTrack[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const { play } = usePlayer();
+  const { playTrack } = useTrackPlayer();
 
   useEffect(() => {
     if (id) {
@@ -48,24 +48,7 @@ export default function PlaylistDetailScreen() {
 
   const handlePlayTrack = async (track: PlaylistTrack['track']) => {
     const allTracks = tracks.map((pt) => pt.track);
-    await play(
-      {
-        id: track.id,
-        title: track.title,
-        artist: track.artist?.name || 'Artista desconhecido',
-        artistId: track.artistId,
-        duration: track.duration,
-        audioUrl: track.audioUrl,
-      },
-      allTracks.map((t) => ({
-        id: t.id,
-        title: t.title,
-        artist: t.artist?.name || 'Artista desconhecido',
-        artistId: t.artistId,
-        duration: t.duration,
-        audioUrl: t.audioUrl,
-      }))
-    );
+    await playTrack(track, allTracks);
   };
 
   if (loading) {

@@ -2,6 +2,8 @@ import React, { createContext, useContext, useState, useEffect, ReactNode } from
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { router } from 'expo-router';
 import apiClient from '@/src/shared/lib/api-client';
+import { usePlayer } from '@/src/contexts/PlayerContext';
+import { getErrorMessage } from '@/src/shared/utils/errorHandler';
 
 interface User {
   id: string;
@@ -57,8 +59,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setToken(response.data.token);
       setUser(response.data.user);
     } catch (error: any) {
-      console.error('Erro no login:', error);
-      throw new Error(error.response?.data?.error?.message || 'Erro ao fazer login');
+      const friendlyMessage = getErrorMessage(error);
+      throw new Error(friendlyMessage);
     }
   };
 
@@ -72,8 +74,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setToken(response.data.token);
       setUser(response.data.user);
     } catch (error: any) {
-      console.error('Erro no registro:', error);
-      throw new Error(error.response?.data?.error?.message || 'Erro ao registrar');
+      const friendlyMessage = getErrorMessage(error);
+      throw new Error(friendlyMessage);
     }
   };
 
